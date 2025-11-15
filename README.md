@@ -67,9 +67,30 @@ Our project is a modified blind cane for the visually impaired that helps to red
 
 
 ## Firmware Overview
-
+<p align="center">
+  <img src="images/hardwareOverview.png" width="800"><br>
+</p>
 
 ### Pin Assignments
+
+**Power**:
+- **+5v** - +5V from Boost Module
+- **GND** - GND from Boost Module
+
+**Distance Sensing**:
+- **+5V** - VCC pin on the HC-SR04
+- **GND** - GND pin on the HC-SR04
+- **D5** - Trig pin on the HC-SR04
+- **D11** - Echo pin on the HC-SR04
+
+**Sound Cue**: 
+- **D8** - VCC pin on the piezo buzzer
+- **GND > Switch** - Toggles GND pin on the piezo buzzer (on/off)
+  
+**Haptic Cue**:
+- **+5v** - VCC pin on vibration motor
+- **D6** - Base pin on control transistor
+- **GND > Transistor/Diode** - Emitter and collector lines for vibration motor control. 
 
 
 ### Setup Instructions
@@ -78,28 +99,37 @@ Our project is a modified blind cane for the visually impaired that helps to red
 - Open the provided .ino file in the Arduino IDE
 - Select the appropriate port and board type (Nano)
 - Upload the code to the Nano
-- Disconnect from USB and power via 5v LIPO
-
-### Behavior table
+- Disconnect from USB and power via LiPo
 
 
 ### Code Snippet
+```cpp
+//Take one distance reading (in cm)
+long distance = pingDistance();
 
-For the full firmware, see 
+//Filter for valid readings
+if (distance > 0 && distance < 120) {
 
+  // Map distance to tone: closer = higher urgency
+  int toneFreq = map(distance, 1, 120, 5000, 500);
+  tone(8, toneFreq, 200);   // buzzer on pin 8
 
-## Development process and challenges
-### Initial Vision: 
+  // Vibration motor: full power at or below 60 cm
+  if (distance <= 60) {
+    analogWrite(vibPin, 255);   // ON
+  } else {
+    analogWrite(vibPin, 0);     // OFF
+  }
+}
+```
+For the full firmware, see [whiteCaneV6_Simplified_Clean.ino](whiteCaneV6_Simplified_Clean.ino)
 
-### Power Struggles
-
-### Perfboarding
-
-### Firmware Logic
 
 ### Hardware Limitations & Planned Improvements
 | Issue                    | Description                                              | Planned Fix                                                                 |
 |--------------------------|----------------------------------------------------------|------------------------------------------------------------------------------|
 | Battery reliability      | 5V LIPO is vulnerable to weather interference.                  | Improve waterproofing and make the housing more robust|
+| Sensor Accuracy      | The HC-SR04 alone can sometimes yield inconsistent results, especially with objects that scatter sound.                 | Integrate a second sensor (time of flight) and cross reference readings.|
+| Housing       | Our current housing doesn't mechanically secure certain components in the circuitry box.                  | Add dedicated segments with mounting screws / threadded holes for securing components. |
 
 
