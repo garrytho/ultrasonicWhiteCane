@@ -25,7 +25,6 @@ Our project is a modified blind cane for the visually impaired that helps to red
   </tr>
 </table>
 
-### Demo video here
 
 ## Features
 -Entirely open sourced
