@@ -1,17 +1,24 @@
+//Pin definitions
 int trig = 5;
 int echo = 11;
 int prevDistance;
+int vibPin = 6;
 
+//variabes for filtering window
 int recentReadings[5];
 int readingCount = -1;
 
+//distance logging
 long currentDistance;
+
+//buzzer control
 int toneFreq;
 
-//counts in-range readings that fail the ±5 cm proximity gate
+//valid readings, but fail the 5cm similarity gate
 int proxMisses = 0;
 
-const int vibPin = 6;
+//vibration control
+int vibPin = 6;
 
 void setup() {
   Serial.begin(9600);
@@ -38,6 +45,7 @@ void sortAscending() {
   }
 }
 
+//returns the distance of an object in cm in accordance with the HC-SR04 datasheet
 long pingDistance() {
   digitalWrite(trig, LOW);
   delayMicroseconds(2);
@@ -58,23 +66,24 @@ void loop() {
   //general filter: valid sensor range
   if (currentDistance < 120 && currentDistance > 0) {
 
-    //Seed once before enforcing ±5 cm proximity
+    //setup for enforcing 5 cm proximity
     if (prevDistance == 0) {
-      prevDistance = currentDistance;   //establish anchor
-      proxMisses = 0;                   //clear proximity miss streak
+      prevDistance = currentDistance;
+      proxMisses = 0;                   
     }
 
-    //enforce ±5 cm proximity gate after seeding
+    //enforce cm proximity gate after setup
     if (currentDistance >= prevDistance - 5 && currentDistance <= prevDistance + 5) {
-      // accepted sample
+      //this passes
       proxMisses = 0;
-
       readingCount++;
 
+      //fill the array slot by slot
       if (readingCount < 5) {
         recentReadings[readingCount] = currentDistance;
       }
 
+      //if the array full. sort and take the median. 
       if (readingCount > 4) {
         sortAscending();
 
@@ -82,7 +91,6 @@ void loop() {
         Serial.print(recentReadings[2]);
         Serial.print("\n");
 
-        //reset window and use median
         readingCount = -1;
         currentDistance = recentReadings[2];
 
@@ -91,23 +99,23 @@ void loop() {
         tone(8, toneFreq, 200);
       }
 
-      //update anchor ONLY for accepted samples
+      //update prevDistance ONLY for accepted samples
       prevDistance = currentDistance;
 
     } else {
       //in-range but failed proximity gate
-      proxMisses++;                     // FIX 3b: track consecutive proximity rejects
+      proxMisses++;          
 
-      // FIX 3c: simple escape—after 3 proximity misses, allow reseed
+      //simple escape—after 3 proximity misses to reset the prevDistance. Stops the thread from getting locked. 
       if (proxMisses >= 3) {
         prevDistance = 0;               // next valid in-range sample will seed
         readingCount = -1;              // clear partial window
         proxMisses = 0;
       }
-      // NOTE: do NOT update prevDistance here (rejects shouldn't move the anchor)
+
     }
   } else {
-  //out-of-range or invalid: do nothing to the anchor/window here
+  //invalid: do nothing here
   }
 
 
@@ -115,9 +123,10 @@ void loop() {
     // ---------------- VIBRATION CONTROL ----------------
   //FULL POWER if at or below 60 cm
   if (currentDistance <= 60 && currentDistance > 0) {
-    analogWrite(vibPin, 255);     // turn motor ON
+    analogWrite(vibPin, 255);     //motor on
   } else {
-    analogWrite(vibPin, 0);       // turn motor OFF
+    analogWrite(vibPin, 0);       //motor off
   }
   // ---------------------------------------------------
+
 }
