@@ -1,5 +1,29 @@
 # Ultrasonic Distance-Sensing White Cane
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/expo3.jpg" width="700"><br>
+      <em>The fully assembled cane on expo day</em>
+    </td>
+    <td align="center">
+      <img src="images/expo1.jpg" width="500"><br>
+      <em>The team delivering the pitch</em>
+    </td>
+  </tr>
+</table>
+
+
 An Arduino-based cane for the visually impaired that uses a distance sensor and haptic feedback to give real time information about surroundings. 
+
+## Update:
+<table>
+  <tr>
+    <td align="center">
+      <img src="images/expoWinner.jpg" width="400"><br>
+      <em>We are excited to announce that this project has won a freshman design award after judging at expo. 
+</em>
+  </tr>
+</table>
 
 ## IMPORTANT:
 This project is a work in progress. Iteration and modification may be necessary for reliable daily usage!
@@ -25,6 +49,7 @@ Our project is a modified blind cane for the visually impaired that helps to red
   </tr>
 </table>
 
+### [Click here to watch the demo video](https://youtube.com/shorts/pAP-bUpbX8s?feature=share)
 
 ## Features
 -Entirely open sourced
