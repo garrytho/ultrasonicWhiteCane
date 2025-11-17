@@ -62,8 +62,7 @@ Our project is a modified blind cane for the visually impaired that helps to red
 | Device | Price per Unit | Precision | Notes |
 |--------|----------------|-----------|-------|
 | [WeWalk Smart Cane 2](https://floridareading.com/products/wewalk-smart-cane-2-with-voice-assistant) | $1,050 | High | Extremely expensive, but has extensive features. |
-| [Saarthi Smart Aid](https://enablemart.in/shop/saarthi-smart-aid-smart-cane/) | $54.17 | Mid-High | Much more affordable, but sourced overseas and not readily available for the American market. |
-| **This White Cane** | **~$51.69** | Mid | Highly portable, easy and cheap to produce, but low precision. Strong applications in low-resource environments. |
+| **This White Cane** | **~$51.69** | Mid | Highly affordable, and possible to build yourself. Open sourced for wider accessilibility and to encourage innovation in the assistive tech space. |
 
 
 
