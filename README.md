@@ -86,10 +86,8 @@ Our project is a modified blind cane for the visually impaired that helps to red
 | 7 | Cane               | Cane              | 1    | $15            | $15  |
 **Total:** $51
 
-## Circuit Diagram
 
-
-## Firmware Overview
+## Hardware Overview
 <p align="center">
   <img src="images/hardwareOverview.png" width="800"><br>
 </p>
